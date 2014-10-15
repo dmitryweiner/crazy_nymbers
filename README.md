@@ -9,11 +9,13 @@ crazy_nymbers
 ![вид снаружи](https://lh6.googleusercontent.com/-_oXQLhH_gdQ/Tuy7IW9gtsI/AAAAAAAAGZI/ei4jdJfmiNM/s600/2011-12-16%2B10.40.42.jpg)
 
 А внутре у ней не только неонка, но и много застывшего горячего клея. Извините за монтаж.
+
 ![внутр](https://lh5.googleusercontent.com/-kMBjEzBInCw/Tuy7I_vS3-I/AAAAAAAAGZM/t9WO7Ctv3G0/s600/2011-12-16%2B10.38.40.jpg)
 
 Ноги 3 и 4 оказались недееспособными, поэтому подсветка контролируется тумблером (изначально хотел запитать от ноги, чтобы можно было менять в настройках).
 
 Это принципиальная схема, сделанная в программе [Fritzing](http://fritzing.org/home/) (моего дисплея не было, пришлось добавлять круками):
+
 ![схема](https://lh3.googleusercontent.com/-pSMK77K4UXE/Tuy6zzL_zvI/AAAAAAAAGYk/1H1wGHFXLB0/h600/crazy_bytes.pn)
 
 Основу программы составляет бесконечный цикл :) Таблица рекордов содержит 4 записи и хранится в EEPROM.
