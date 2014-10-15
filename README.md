@@ -21,3 +21,5 @@ crazy_nymbers
 Устройство в действии:
 
 [![Устройство в действии](http://img.youtube.com/vi/u6UNkNK4ssM/0.jpg)](http://www.youtube.com/watch?v=u6UNkNK4ssM)
+
+[Исходный код](https://github.com/dmitryweiner/crazy_nymbers/blob/master/crazy_numbers.pde)
