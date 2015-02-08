@@ -1,6 +1,6 @@
 #include "math.h"
 #include "Time.h"  
-#include "Bounce.h"
+#include "Bounce2.h"
 #include <avr/pgmspace.h>
 #include <EEPROM.h>
 
@@ -201,6 +201,37 @@ void LcdPrintNumber(long n)
   free(buf);
 }
 
+void LcdPrintNumberXY(int x, int y, long n, boolean isAlignedToRight)
+{
+  char * buf = (char*) malloc (5 * sizeof(char));  // prints up to 5 digits  
+  int i=0;
+  for(i=0; i<5; i++) buf[i]=0; 
+  ConvertNumberToString(n, buf);
+  if (! isAlignedToRight) {
+    i = 0;
+    LcdGotoXY(x, y);
+    while((i<5) && buf[i]){
+      LcdCharacter(buf[i], LANG_RUS);
+      i++;
+    }
+  } else {
+    i = 0;
+    //finding last digit
+    while((i<5) && buf[i]){
+      i++;
+    }
+    i--;
+    int j = 0;
+    while(i>=0){
+      LcdGotoXY(x - j * 6, y);
+      LcdCharacter(buf[i], LANG_RUS);
+      i--;
+      j++;
+    }
+  }
+  free(buf);
+}
+
 void LcdClear(void)
 {
   int i, j;
@@ -390,10 +421,10 @@ unsigned long button_1_last = 0;
 byte cur_menu = 1;
 byte cur_settings = 1;
 
-Bounce button_1 = Bounce(BUTTON_1,50);
-Bounce button_2 = Bounce(BUTTON_2,50);
-Bounce button_3 = Bounce(BUTTON_3,50);
-Bounce button_4 = Bounce(BUTTON_4,50);
+Bounce button_1 = Bounce();
+Bounce button_2 = Bounce();
+Bounce button_3 = Bounce();
+Bounce button_4 = Bounce();
 
 int op1, op2; //operands
 byte sign = 0; // 1 +, 2 -, 3 *, 4 :
@@ -417,6 +448,14 @@ void setup(void)
   pinMode(BUTTON_2, INPUT);
   pinMode(BUTTON_3, INPUT);
   pinMode(BUTTON_4, INPUT);
+  button_1.attach(BUTTON_1);
+  button_1.interval(50);
+  button_2.attach(BUTTON_2);
+  button_2.interval(50);
+  button_3.attach(BUTTON_3);
+  button_3.interval(50);
+  button_4.attach(BUTTON_4);
+  button_4.interval(50);
   tone(PIN_ALARM, 220, 100);
   randomSeed(analogRead(0));
 }
@@ -476,7 +515,7 @@ void init_variables() {
     break;
   }
   game_mode = GAME_WAIT;
-  answ_time = round(1+3.3*exp(1-score/24));
+  answ_time = round(4+2.3*exp(1-score/24));
 }
 
 void process_key_pressed(byte key_pressed) {
@@ -730,28 +769,24 @@ void loop(void)
       LcdGotoXY(0, 0);
       LcdPrintNumber(score);
 
-      LcdGotoXY(72, 0);
-      LcdPrintNumber(answ_time);
+      LcdStringXY(72, 0, "  ", LANG_RUS);
+      LcdPrintNumberXY(78, 0, answ_time, true);
 
       LcdGotoXY(28, 2);
       LcdPrintNumber(op1);
       if (sign == 1) {
         LcdStringXY(38, 2, "+", LANG_RUS);
-      } 
+      }
       else if (sign == 2) {
         LcdStringXY(38, 2, "-", LANG_RUS);
       }
       LcdGotoXY(48, 2);
       LcdPrintNumber(op2);
 
-      LcdGotoXY(0, 3);
-      LcdPrintNumber(answ1);
-      LcdGotoXY(0, 5);
-      LcdPrintNumber(answ2);
-      LcdGotoXY(70, 3);
-      LcdPrintNumber(answ3);
-      LcdGotoXY(70, 5);
-      LcdPrintNumber(answ4);
+      LcdPrintNumberXY(0,  3, answ1, false);
+      LcdPrintNumberXY(0,  5, answ2, false);
+      LcdPrintNumberXY(78, 3, answ3, true);
+      LcdPrintNumberXY(78, 5, answ4, true);
 
     } 
     else if (game_mode == GAME_FAIL) {
@@ -809,4 +844,3 @@ void loop(void)
     redraw = 0;
   } 
 }
-
